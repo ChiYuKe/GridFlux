@@ -30,4 +30,12 @@ public class ModBlocks {
                     .sound(SoundType.METAL)
                     .requiresCorrectToolForDrops()
     );
+
+    public static final DeferredBlock<BatteryPackBlock> BATTERY_PACK = BLOCKS.registerBlock(
+            "battery_pack",
+            BatteryPackBlock::new,
+            BlockBehaviour.Properties.of()
+                    .strength(2.5F, 6.0F)
+                    .sound(SoundType.METAL)
+    );
 }

@@ -4,5 +4,21 @@
   "block.grid_flux.lithium_block": "Block of Lithium",
   "item.grid_flux.raw_lithium": "Raw Lithium",
   "item.grid_flux.lithium_ingot": "Lithium Ingot",
-  "item.grid_flux.lithium_dust": "Lithium Dust"
+  "item.grid_flux.lithium_dust": "Lithium Dust",
+  "item.grid_flux.graphite_dust": "Graphite Dust",
+  "item.grid_flux.copper_coil": "Copper Coil",
+  "item.grid_flux.basic_lithium_battery": "Basic Lithium Battery",
+  "item.grid_flux.intermediate_lithium_battery": "Intermediate Lithium Battery",
+  "item.grid_flux.advanced_lithium_battery": "Advanced Lithium Battery",
+  "block.grid_flux.battery_pack": "Battery Pack",
+  "container.grid_flux.battery_pack": "Battery Pack",
+  "itemGroup.grid_flux": "Grid Flux",
+  "tooltip.grid_flux.energy": "Energy: %s / %s FE",
+  "tooltip.grid_flux.battery_pack.mode": "Mode: %s",
+  "tooltip.grid_flux.battery_pack.slot": "%s. %s: %s / %s FE",
+  "tooltip.grid_flux.hold_shift": "Hold Shift to view internal batteries",
+  "screen.grid_flux.battery_pack.mode": "Mode: %s",
+  "mode.grid_flux.battery_pack.discharge": "Discharge",
+  "mode.grid_flux.battery_pack.charge": "Charge",
+  "mode.grid_flux.battery_pack.standby": "Standby"
 }

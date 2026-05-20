@@ -1,5 +1,7 @@
 {
   "values": [
-    "#c:ingots/lithium"
+    "#c:ingots/lithium",
+    "#c:ingots/copper",
+    "#c:ingots/gold"
   ]
 }

@@ -1,0 +1,7 @@
+{
+  "values": [
+    "#c:batteries/lithium/basic",
+    "#c:batteries/lithium/intermediate",
+    "#c:batteries/lithium/advanced"
+  ]
+}

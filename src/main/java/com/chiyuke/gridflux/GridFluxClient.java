@@ -27,6 +27,6 @@ public class GridFluxClient {
 
     @SubscribeEvent
     static void registerMenuScreens(RegisterMenuScreensEvent event) {
-
+        event.register(ModMenuTypes.BATTERY_PACK.get(), BatteryPackScreen::new);
     }
 }

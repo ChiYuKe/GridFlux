@@ -4,5 +4,21 @@
   "block.grid_flux.lithium_block": "锂块",
   "item.grid_flux.raw_lithium": "粗锂",
   "item.grid_flux.lithium_ingot": "锂锭",
-  "item.grid_flux.lithium_dust": "锂粉"
+  "item.grid_flux.lithium_dust": "锂粉",
+  "item.grid_flux.graphite_dust": "石墨粉",
+  "item.grid_flux.copper_coil": "铜线圈",
+  "item.grid_flux.basic_lithium_battery": "初级锂电池",
+  "item.grid_flux.intermediate_lithium_battery": "中级锂电池",
+  "item.grid_flux.advanced_lithium_battery": "高级锂电池",
+  "block.grid_flux.battery_pack": "电池包",
+  "container.grid_flux.battery_pack": "电池包",
+  "itemGroup.grid_flux": "矩阵通量",
+  "tooltip.grid_flux.energy": "能量：%s / %s FE",
+  "tooltip.grid_flux.battery_pack.mode": "模式：%s",
+  "tooltip.grid_flux.battery_pack.slot": "%s. %s：%s / %s FE",
+  "tooltip.grid_flux.hold_shift": "按住 Shift 查看内部电池",
+  "screen.grid_flux.battery_pack.mode": "模式：%s",
+  "mode.grid_flux.battery_pack.discharge": "放电",
+  "mode.grid_flux.battery_pack.charge": "充电",
+  "mode.grid_flux.battery_pack.standby": "待机"
 }

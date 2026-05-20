@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": {
+      "tag": "c:batteries/lithium/basic"
+    },
+    "C": {
+      "tag": "c:coils/copper"
+    },
+    "G": {
+      "tag": "c:dusts/graphite"
+    }
+  },
+  "pattern": [
+    "BCB",
+    "GCG"
+  ],
+  "result": {
+    "count": 1,
+    "id": "grid_flux:intermediate_lithium_battery"
+  }
+}
