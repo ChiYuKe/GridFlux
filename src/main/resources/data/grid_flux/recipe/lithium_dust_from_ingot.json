@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "tag": "c:ingots/lithium"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "grid_flux:lithium_dust"
+  }
+}

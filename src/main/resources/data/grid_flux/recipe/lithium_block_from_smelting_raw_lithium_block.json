@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:smelting",
+  "category": "misc",
+  "cookingtime": 200,
+  "experience": 0.7,
+  "group": "lithium_block",
+  "ingredient": {
+    "tag": "c:storage_blocks/raw_lithium"
+  },
+  "result": {
+    "id": "grid_flux:lithium_block"
+  }
+}
