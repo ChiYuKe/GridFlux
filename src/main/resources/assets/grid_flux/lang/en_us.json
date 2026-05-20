@@ -1,0 +1,8 @@
+{
+  "block.grid_flux.lithium_ore": "Lithium Ore",
+  "block.grid_flux.raw_lithium_block": "Block of Raw Lithium",
+  "block.grid_flux.lithium_block": "Block of Lithium",
+  "item.grid_flux.raw_lithium": "Raw Lithium",
+  "item.grid_flux.lithium_ingot": "Lithium Ingot",
+  "item.grid_flux.lithium_dust": "Lithium Dust"
+}

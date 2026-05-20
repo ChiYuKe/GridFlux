@@ -1,0 +1,8 @@
+{
+  "block.grid_flux.lithium_ore": "锂矿",
+  "block.grid_flux.raw_lithium_block": "粗锂块",
+  "block.grid_flux.lithium_block": "锂块",
+  "item.grid_flux.raw_lithium": "粗锂",
+  "item.grid_flux.lithium_ingot": "锂锭",
+  "item.grid_flux.lithium_dust": "锂粉"
+}
