@@ -13,6 +13,7 @@ import java.util.Map;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.SimpleMenuProvider;
@@ -75,14 +76,6 @@ public class BatteryPackBlockItem extends BlockItem {
                 "tooltip.grid_flux.battery_pack.buffer",
                 EnergyText.format(inventory.getTransferRate())
         ).withStyle(ChatFormatting.GRAY));
-        int damage = stack.getOrDefault(ModDataComponents.BATTERY_PACK_DAMAGE.get(), 0);
-        if (damage > 0) {
-            tooltipComponents.add(Component.translatable(
-                    "tooltip.grid_flux.battery_pack.damage",
-                    damage,
-                    2
-            ).withStyle(ChatFormatting.RED));
-        }
 
         if (!Screen.hasShiftDown()) {
             tooltipComponents.add(Component.translatable("tooltip.grid_flux.hold_shift").withStyle(ChatFormatting.DARK_GRAY));
@@ -93,18 +86,29 @@ public class BatteryPackBlockItem extends BlockItem {
         for (int i = 0; i < inventory.getContainerSize(); i++) {
             ItemStack battery = inventory.getItem(i);
             if (battery.getItem() instanceof BatteryItem batteryItem) {
-                BatteryTooltipKey key = new BatteryTooltipKey(battery.getItem(), batteryItem.getEnergy(battery), batteryItem.getCapacity());
+                BatteryTooltipKey key = new BatteryTooltipKey(battery.getItem(), batteryItem.getEnergy(battery), batteryItem.getCapacity(battery), batteryItem.getDamage(battery));
                 groups.computeIfAbsent(key, ignored -> new BatteryTooltipGroup(battery, batteryItem)).addSlot(i + 1);
             }
         }
         for (BatteryTooltipGroup group : groups.values()) {
-            tooltipComponents.add(Component.translatable(
-                    "tooltip.grid_flux.battery_pack.grouped_slot",
-                    group.stack.getHoverName(),
-                    group.count,
-                    EnergyText.format(group.energy),
-                    EnergyText.format(group.capacity)
-            ).withStyle(getBatteryColor(group.stack)));
+            MutableComponent detail = group.damage > 0
+                    ? Component.translatable(
+                            "tooltip.grid_flux.battery_pack.grouped_slot_damaged",
+                            group.stack.getHoverName(),
+                            group.count,
+                            EnergyText.format(group.energy),
+                            EnergyText.format(group.capacity),
+                            group.damage,
+                            BatteryItem.MAX_DAMAGE
+                    )
+                    : Component.translatable(
+                            "tooltip.grid_flux.battery_pack.grouped_slot",
+                            group.stack.getHoverName(),
+                            group.count,
+                            EnergyText.format(group.energy),
+                            EnergyText.format(group.capacity)
+                    );
+            tooltipComponents.add(detail.withStyle(getBatteryColor(group.stack)));
         }
     }
 
@@ -121,19 +125,21 @@ public class BatteryPackBlockItem extends BlockItem {
         return ChatFormatting.GRAY;
     }
 
-    private record BatteryTooltipKey(Item item, int energy, int capacity) {
+    private record BatteryTooltipKey(Item item, int energy, int capacity, int damage) {
     }
 
     private static class BatteryTooltipGroup {
         private final ItemStack stack;
         private final int energy;
         private final int capacity;
+        private final int damage;
         private int count;
 
         private BatteryTooltipGroup(ItemStack stack, BatteryItem batteryItem) {
             this.stack = stack.copyWithCount(1);
             this.energy = batteryItem.getEnergy(stack);
-            this.capacity = batteryItem.getCapacity();
+            this.capacity = batteryItem.getCapacity(stack);
+            this.damage = batteryItem.getDamage(stack);
         }
 
         private void addSlot(int slot) {

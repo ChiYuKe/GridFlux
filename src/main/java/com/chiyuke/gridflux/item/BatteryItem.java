@@ -12,6 +12,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 
 public class BatteryItem extends Item {
+    public static final int MAX_DAMAGE = 2;
     private final int capacity;
     private final int transferRate;
 
@@ -23,6 +24,15 @@ public class BatteryItem extends Item {
 
     public int getCapacity() {
         return capacity;
+    }
+
+    public int getCapacity(ItemStack stack) {
+        int damage = getDamage(stack);
+        return Math.max(0, capacity * (100 - damage * 20) / 100);
+    }
+
+    public int getDamage(ItemStack stack) {
+        return Math.max(0, stack.getOrDefault(ModDataComponents.BATTERY_DAMAGE.get(), 0));
     }
 
     public int getTransferRate() {
@@ -40,7 +50,8 @@ public class BatteryItem extends Item {
 
     @Override
     public int getBarWidth(ItemStack stack) {
-        return Math.round(13.0F * getEnergy(stack) / capacity);
+        int effectiveCapacity = Math.max(1, getCapacity(stack));
+        return Math.round(13.0F * getEnergy(stack) / effectiveCapacity);
     }
 
     @Override
@@ -53,7 +64,15 @@ public class BatteryItem extends Item {
         tooltipComponents.add(Component.translatable(
                 "tooltip.grid_flux.energy",
                 EnergyText.format(getEnergy(stack)),
-                EnergyText.format(capacity)
+                EnergyText.format(getCapacity(stack))
         ).withStyle(ChatFormatting.AQUA));
+        int damage = getDamage(stack);
+        if (damage > 0) {
+            tooltipComponents.add(Component.translatable(
+                    "tooltip.grid_flux.battery.damage",
+                    damage,
+                    MAX_DAMAGE
+            ).withStyle(ChatFormatting.RED));
+        }
     }
 }

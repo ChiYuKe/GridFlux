@@ -10,11 +10,15 @@
     },
     "G": {
       "item": "grid_flux:graphite_dust"
+    },
+    "O": {
+      "tag": "c:ingots/cobalt"
     }
   },
   "pattern": [
     "BCB",
-    "GCG"
+    "GOG",
+    " C "
   ],
   "result": {
     "count": 1,

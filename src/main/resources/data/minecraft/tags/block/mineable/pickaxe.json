@@ -1,7 +1,10 @@
 {
   "values": [
     "grid_flux:lithium_ore",
+    "grid_flux:cobalt_ore",
     "grid_flux:raw_lithium_block",
-    "grid_flux:lithium_block"
+    "grid_flux:raw_cobalt_block",
+    "grid_flux:lithium_block",
+    "grid_flux:cobalt_block"
   ]
 }

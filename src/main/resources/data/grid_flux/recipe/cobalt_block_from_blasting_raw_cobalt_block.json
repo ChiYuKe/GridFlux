@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:blasting",
+  "category": "misc",
+  "cookingtime": 100,
+  "experience": 0.7,
+  "group": "cobalt_block",
+  "ingredient": {
+    "tag": "c:storage_blocks/raw_cobalt"
+  },
+  "result": {
+    "id": "grid_flux:cobalt_block"
+  }
+}

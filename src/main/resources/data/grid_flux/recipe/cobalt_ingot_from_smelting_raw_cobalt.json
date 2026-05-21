@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:smelting",
+  "category": "misc",
+  "cookingtime": 200,
+  "experience": 0.7,
+  "ingredient": {
+    "item": "grid_flux:raw_cobalt"
+  },
+  "result": {
+    "id": "grid_flux:cobalt_ingot"
+  }
+}

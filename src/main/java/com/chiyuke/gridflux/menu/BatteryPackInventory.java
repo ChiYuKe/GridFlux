@@ -54,7 +54,7 @@ public class BatteryPackInventory extends SimpleContainer {
     }
 
     public static int getMaxEnergy(ItemStack stack) {
-        return stack.getItem() instanceof BatteryItem batteryItem ? batteryItem.getCapacity() : 0;
+        return stack.getItem() instanceof BatteryItem batteryItem ? batteryItem.getCapacity(stack) : 0;
     }
 
     public int getStoredEnergy() {
@@ -134,14 +134,4 @@ public class BatteryPackInventory extends SimpleContainer {
         stack.set(ModDataComponents.BATTERY_PACK_MODE.get(), mode.ordinal());
     }
 
-    public void saveDamagedToStack(ItemStack stack) {
-        NonNullList<ItemStack> damagedItems = copyItems();
-        for (ItemStack item : damagedItems) {
-            if (item.getItem() instanceof BatteryItem) {
-                item.set(ModDataComponents.ENERGY.get(), 0);
-            }
-        }
-        stack.set(net.minecraft.core.component.DataComponents.CONTAINER, ItemContainerContents.fromItems(damagedItems));
-        stack.set(ModDataComponents.BATTERY_PACK_MODE.get(), mode.ordinal());
-    }
 }

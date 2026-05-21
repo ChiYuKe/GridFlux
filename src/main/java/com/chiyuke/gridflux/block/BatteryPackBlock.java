@@ -106,7 +106,9 @@ public class BatteryPackBlock extends BaseEntityBlock {
     protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
         if (!state.is(newState.getBlock())) {
             if (!level.isClientSide && level.getBlockEntity(pos) instanceof BatteryPackBlockEntity blockEntity) {
-                Block.popResource(level, pos, blockEntity.createItemStack());
+                if (!blockEntity.isExploding()) {
+                    Block.popResource(level, pos, blockEntity.createItemStack());
+                }
             }
             super.onRemove(state, level, pos, newState, isMoving);
         }

@@ -18,6 +18,13 @@ public class ModBlocks {
                     .requiresCorrectToolForDrops()
     );
 
+    public static final DeferredBlock<Block> COBALT_ORE = BLOCKS.registerSimpleBlock(
+            "cobalt_ore",
+            BlockBehaviour.Properties.of()
+                    .strength(3.5F, 3.0F)
+                    .requiresCorrectToolForDrops()
+    );
+
     public static final DeferredBlock<Block> RAW_LITHIUM_BLOCK = BLOCKS.registerSimpleBlock(
             "raw_lithium_block",
             BlockBehaviour.Properties.of()
@@ -25,8 +32,23 @@ public class ModBlocks {
                     .requiresCorrectToolForDrops()
     );
 
+    public static final DeferredBlock<Block> RAW_COBALT_BLOCK = BLOCKS.registerSimpleBlock(
+            "raw_cobalt_block",
+            BlockBehaviour.Properties.of()
+                    .strength(5.0F, 6.0F)
+                    .requiresCorrectToolForDrops()
+    );
+
     public static final DeferredBlock<Block> LITHIUM_BLOCK = BLOCKS.registerSimpleBlock(
             "lithium_block",
+            BlockBehaviour.Properties.of()
+                    .strength(5.0F, 6.0F)
+                    .sound(SoundType.METAL)
+                    .requiresCorrectToolForDrops()
+    );
+
+    public static final DeferredBlock<Block> COBALT_BLOCK = BLOCKS.registerSimpleBlock(
+            "cobalt_block",
             BlockBehaviour.Properties.of()
                     .strength(5.0F, 6.0F)
                     .sound(SoundType.METAL)

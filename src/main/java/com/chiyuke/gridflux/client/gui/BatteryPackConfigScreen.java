@@ -67,7 +67,7 @@ public class BatteryPackConfigScreen extends AbstractContainerScreen<BatteryPack
         drawRightAligned(guiGraphics, this.menu.getMode().displayName(), MODE_BUTTON_X - 4, 52);
         guiGraphics.drawString(this.font, Component.translatable("screen.grid_flux.battery_pack.overload_progress"), 8, 68, 0x404040, false);
         drawRightAligned(guiGraphics, Component.translatable(this.menu.isOverloaded() ? "screen.grid_flux.battery_pack.overload_on" : "screen.grid_flux.battery_pack.overload_off"), OVERLOAD_BUTTON_X - 4, 81);
-        guiGraphics.drawString(this.font, Component.translatable("screen.grid_flux.battery_pack.range_prediction", 2, this.menu.getExplosionRange()), 8, 105, 0x404040, false);
+        guiGraphics.drawString(this.font, Component.translatable("screen.grid_flux.battery_pack.range_prediction", this.menu.getExplosionRange(), this.menu.getMaxExplosionRange()), 8, 105, 0x404040, false);
     }
 
     private void drawRightAligned(GuiGraphics guiGraphics, Component text, int right, int y) {
@@ -86,7 +86,7 @@ public class BatteryPackConfigScreen extends AbstractContainerScreen<BatteryPack
         guiGraphics.fill(x + 7, y + 97, x + this.imageWidth - 7, y + 98, 0xFFC6C6C6);
         drawButton(guiGraphics, x + MODE_BUTTON_X, y + MODE_BUTTON_Y, 0xFF3F9FA7);
         drawButton(guiGraphics, x + OVERLOAD_BUTTON_X, y + OVERLOAD_BUTTON_Y, this.menu.isOverloaded() ? 0xFFFF5555 : 0xFF777777);
-        drawProgress(guiGraphics, x + BAR_X, y + BAR_Y, this.menu.getOverloadProgress());
+        drawProgress(guiGraphics, x + BAR_X, y + BAR_Y, this.menu.getOverloadProgress(), this.menu.getOverloadMax());
     }
 
     private static void drawButton(GuiGraphics guiGraphics, int x, int y, int color) {
@@ -95,10 +95,19 @@ public class BatteryPackConfigScreen extends AbstractContainerScreen<BatteryPack
         guiGraphics.fill(x + 3, y + 3, x + BUTTON_SIZE - 3, y + BUTTON_SIZE - 3, color);
     }
 
-    private static void drawProgress(GuiGraphics guiGraphics, int x, int y, int progress) {
+    private static void drawProgress(GuiGraphics guiGraphics, int x, int y, int progress, int maxProgress) {
         guiGraphics.fill(x, y, x + BAR_WIDTH, y + BAR_HEIGHT, 0xFF555555);
         guiGraphics.fill(x + 1, y + 1, x + BAR_WIDTH - 1, y + BAR_HEIGHT - 1, 0xFFCFCFCF);
-        int filled = Math.max(0, Math.min(BAR_WIDTH - 2, progress * (BAR_WIDTH - 2) / 100));
+        int safeMax = Math.max(1, maxProgress);
+        int filled = Math.max(0, Math.min(BAR_WIDTH - 2, progress * (BAR_WIDTH - 2) / safeMax));
         guiGraphics.fill(x + 1, y + 1, x + 1 + filled, y + BAR_HEIGHT - 1, 0xFFFF5555);
+
+        int innerStart = x + 1;
+        int innerEnd = x + BAR_WIDTH - 1;
+        int innerWidth = innerEnd - innerStart;
+        for (int i = 1; i <= 4; i++) {
+            int tickX = innerStart + innerWidth * i / 4;
+            guiGraphics.fill(tickX, y + 1, tickX + 1, y + BAR_HEIGHT - 1, 0x66888888);
+        }
     }
 }

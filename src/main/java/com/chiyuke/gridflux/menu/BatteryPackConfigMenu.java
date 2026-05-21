@@ -25,7 +25,9 @@ public class BatteryPackConfigMenu extends AbstractContainerMenu {
     private static final int DATA_X = 7;
     private static final int DATA_Y = 8;
     private static final int DATA_Z = 9;
-    private static final int DATA_COUNT = 10;
+    private static final int DATA_MAX_RANGE = 10;
+    private static final int DATA_OVERLOAD_MAX = 11;
+    private static final int DATA_COUNT = 12;
 
     private final BatteryPackBlockEntity blockEntity;
     private final ContainerData data;
@@ -57,6 +59,10 @@ public class BatteryPackConfigMenu extends AbstractContainerMenu {
         return data.get(DATA_PROGRESS);
     }
 
+    public int getOverloadMax() {
+        return Math.max(1, data.get(DATA_OVERLOAD_MAX));
+    }
+
     public int getStoredEnergy() {
         return data.get(DATA_STORED);
     }
@@ -71,6 +77,10 @@ public class BatteryPackConfigMenu extends AbstractContainerMenu {
 
     public int getExplosionRange() {
         return data.get(DATA_RANGE);
+    }
+
+    public int getMaxExplosionRange() {
+        return data.get(DATA_MAX_RANGE);
     }
 
     public BlockPos getBlockPos() {

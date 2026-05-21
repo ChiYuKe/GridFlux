@@ -12,8 +12,11 @@ public class ModItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(GridFlux.MOD_ID);
 
     public static final DeferredItem<BlockItem> LITHIUM_ORE = ITEMS.registerSimpleBlockItem(ModBlocks.LITHIUM_ORE);
+    public static final DeferredItem<BlockItem> COBALT_ORE = ITEMS.registerSimpleBlockItem(ModBlocks.COBALT_ORE);
     public static final DeferredItem<BlockItem> RAW_LITHIUM_BLOCK = ITEMS.registerSimpleBlockItem(ModBlocks.RAW_LITHIUM_BLOCK);
+    public static final DeferredItem<BlockItem> RAW_COBALT_BLOCK = ITEMS.registerSimpleBlockItem(ModBlocks.RAW_COBALT_BLOCK);
     public static final DeferredItem<BlockItem> LITHIUM_BLOCK = ITEMS.registerSimpleBlockItem(ModBlocks.LITHIUM_BLOCK);
+    public static final DeferredItem<BlockItem> COBALT_BLOCK = ITEMS.registerSimpleBlockItem(ModBlocks.COBALT_BLOCK);
     public static final DeferredItem<BatteryPackBlockItem> BATTERY_PACK = ITEMS.register(
             "battery_pack",
             () -> new BatteryPackBlockItem(ModBlocks.BATTERY_PACK.get(), new Item.Properties())
@@ -28,8 +31,11 @@ public class ModItems {
     );
 
     public static final DeferredItem<Item> RAW_LITHIUM = ITEMS.registerSimpleItem("raw_lithium");
+    public static final DeferredItem<Item> RAW_COBALT = ITEMS.registerSimpleItem("raw_cobalt");
     public static final DeferredItem<Item> LITHIUM_INGOT = ITEMS.registerSimpleItem("lithium_ingot");
+    public static final DeferredItem<Item> COBALT_INGOT = ITEMS.registerSimpleItem("cobalt_ingot");
     public static final DeferredItem<Item> LITHIUM_DUST = ITEMS.registerSimpleItem("lithium_dust");
+    public static final DeferredItem<Item> COBALT_DUST = ITEMS.registerSimpleItem("cobalt_dust");
     public static final DeferredItem<Item> GRAPHITE_DUST = ITEMS.registerSimpleItem("graphite_dust");
     public static final DeferredItem<Item> COPPER_COIL = ITEMS.registerSimpleItem("copper_coil");
     public static final DeferredItem<Item> WRENCH = ITEMS.registerSimpleItem("wrench");

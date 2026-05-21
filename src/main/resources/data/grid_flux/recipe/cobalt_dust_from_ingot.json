@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "grid_flux:cobalt_ingot"
+    }
+  ],
+  "result": {
+    "id": "grid_flux:cobalt_dust",
+    "count": 1
+  }
+}

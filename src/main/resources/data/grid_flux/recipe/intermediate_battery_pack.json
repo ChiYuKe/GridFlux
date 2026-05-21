@@ -2,23 +2,23 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "B": {
+    "I": {
       "tag": "c:batteries/lithium/intermediate"
     },
     "C": {
       "tag": "c:coils/copper"
     },
-    "G": {
-      "tag": "c:ingots/gold"
+    "O": {
+      "tag": "c:ingots/cobalt"
     },
     "P": {
       "item": "grid_flux:battery_pack"
     }
   },
   "pattern": [
-    "CBC",
-    "GPG",
-    "CBC"
+    "ICI",
+    "OPO",
+    "ICI"
   ],
   "result": {
     "count": 1,

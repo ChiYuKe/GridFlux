@@ -4,6 +4,7 @@ import com.chiyuke.gridflux.energy.BatteryPackBlockEnergyStorage;
 import com.chiyuke.gridflux.energy.BatteryPackMode;
 import com.chiyuke.gridflux.GridFlux;
 import com.chiyuke.gridflux.event.UnstableBatteryEvents;
+import com.chiyuke.gridflux.item.BatteryItem;
 import com.chiyuke.gridflux.menu.BatteryPackConfigMenu;
 import com.chiyuke.gridflux.menu.BatteryPackInventory;
 import com.chiyuke.gridflux.menu.BatteryPackMenu;
@@ -34,11 +35,14 @@ import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.energy.IEnergyStorage;
 
 public class BatteryPackBlockEntity extends BlockEntity implements MenuProvider {
-    private static final int OVERLOAD_MAX = 100;
-    private static final int OVERLOAD_WARNING_THRESHOLD = 70;
+    private static final int OVERLOAD_MAX = 24_000;
+    private static final int OVERLOAD_WARNING_THRESHOLD = OVERLOAD_MAX * 70 / 100;
     private static final int OVERLOAD_OUTPUT_MULTIPLIER = 4;
+    private static final int MIN_EXPLOSION_RANGE = 2;
+    private static final int MAX_EXPLOSION_RANGE = 16;
+    private static final int ENERGY_PER_EXPLOSION_RANGE = 3_657_143;
 
-    private static final float DAMAGE_CHANCE = 0.06F;
+    private static final float DAMAGE_CHANCE = 1F;
 
     private final BatteryPackInventory inventory;
     private final BatteryPackBlockEnergyStorage energyStorage = new BatteryPackBlockEnergyStorage(this);
@@ -46,7 +50,7 @@ public class BatteryPackBlockEntity extends BlockEntity implements MenuProvider 
     private boolean overloaded;
     private int overloadProgress;
     private boolean overloadWarningSent;
-    private int damage;
+    private boolean exploding;
 
     public BatteryPackBlockEntity(BlockPos pos, BlockState blockState) {
         super(ModBlockEntities.BATTERY_PACK.get(), pos, blockState);
@@ -82,14 +86,32 @@ public class BatteryPackBlockEntity extends BlockEntity implements MenuProvider 
         return overloadProgress;
     }
 
+    public int getOverloadMax() {
+        return OVERLOAD_MAX;
+    }
+
     public boolean isOverloaded() {
         return overloaded;
     }
 
+    public boolean isExploding() {
+        return exploding;
+    }
+
     public int getExplosionRange() {
-        int maxEnergy = Math.max(1, inventory.getMaxEnergy());
-        double fill = inventory.getStoredEnergy() / (double) maxEnergy;
-        return Math.max(2, Math.min(16, 2 + (int) Math.ceil(fill * 14.0D)));
+        return getExplosionRangeForEnergy(inventory.getStoredEnergy());
+    }
+
+    public int getMaxExplosionRange() {
+        return getExplosionRangeForEnergy(inventory.getMaxEnergy());
+    }
+
+    private static int getExplosionRangeForEnergy(int energy) {
+        if (energy <= 0) {
+            return MIN_EXPLOSION_RANGE;
+        }
+        int extraRange = (int) Math.ceil(energy / (double) ENERGY_PER_EXPLOSION_RANGE);
+        return Math.max(MIN_EXPLOSION_RANGE, Math.min(MAX_EXPLOSION_RANGE, MIN_EXPLOSION_RANGE + extraRange));
     }
 
     public int receiveInputBuffer(int maxReceive, boolean simulate) {
@@ -197,28 +219,39 @@ public class BatteryPackBlockEntity extends BlockEntity implements MenuProvider 
     private void explode(Level level, BlockPos pos) {
         overloaded = false;
         overloadProgress = 0;
+        exploding = true;
         float power = Math.max(1.0F, getExplosionRange() * 0.5F);
         level.removeBlock(pos, false);
         level.explode(null, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, power, Level.ExplosionInteraction.BLOCK);
-        dropDamagedPack(level, pos);
+        dropDamagedBatteries(level, pos);
     }
 
-    private void dropDamagedPack(Level level, BlockPos pos) {
-        if (damage >= 1) {
-            return;
-        }
-        ItemStack stack = new ItemStack(getBlockState().getBlock());
-        inventory.saveDamagedToStack(stack);
-        stack.set(ModDataComponents.BATTERY_PACK_DAMAGE.get(), damage + 1);
-        BatteryPackInventory damagedInventory = BatteryPackInventory.fromStack(stack);
-        for (int i = 0; i < damagedInventory.getContainerSize(); i++) {
-            if (!damagedInventory.getItem(i).isEmpty() && level.random.nextFloat() < DAMAGE_CHANCE) {
-                UnstableBatteryEvents.spawnUnstableBattery(level, pos, damagedInventory.getItem(i).copyWithCount(1));
-                damagedInventory.setItem(i, ItemStack.EMPTY);
+    private void dropDamagedBatteries(Level level, BlockPos pos) {
+        for (int i = 0; i < inventory.getContainerSize(); i++) {
+            ItemStack battery = damageBattery(inventory.getItem(i));
+            if (battery.isEmpty()) {
+                continue;
+            }
+            if (level.random.nextFloat() < DAMAGE_CHANCE) {
+                UnstableBatteryEvents.spawnUnstableBattery(level, pos, battery);
+            } else {
+                Block.popResource(level, pos, battery);
             }
         }
-        damagedInventory.saveDamagedToStack(stack);
-        Block.popResource(level, pos, stack);
+    }
+
+    private ItemStack damageBattery(ItemStack stack) {
+        if (!(stack.getItem() instanceof BatteryItem batteryItem)) {
+            return ItemStack.EMPTY;
+        }
+        int damage = batteryItem.getDamage(stack) + 1;
+        if (damage > BatteryItem.MAX_DAMAGE) {
+            return ItemStack.EMPTY;
+        }
+        ItemStack damaged = stack.copyWithCount(1);
+        damaged.set(ModDataComponents.ENERGY.get(), 0);
+        damaged.set(ModDataComponents.BATTERY_DAMAGE.get(), damage);
+        return damaged;
     }
 
     public void loadFromStack(ItemStack stack) {
@@ -229,7 +262,6 @@ public class BatteryPackBlockEntity extends BlockEntity implements MenuProvider 
         overloaded = false;
         overloadProgress = 0;
         overloadWarningSent = false;
-        damage = stack.getOrDefault(ModDataComponents.BATTERY_PACK_DAMAGE.get(), 0);
     }
 
     public ItemStack createItemStack() {
@@ -256,7 +288,7 @@ public class BatteryPackBlockEntity extends BlockEntity implements MenuProvider 
     }
 
     public ContainerData createConfigData() {
-        return new SimpleContainerData(10) {
+        return new SimpleContainerData(12) {
             @Override
             public int get(int index) {
                 return switch (index) {
@@ -270,6 +302,8 @@ public class BatteryPackBlockEntity extends BlockEntity implements MenuProvider 
                     case 7 -> worldPosition.getX();
                     case 8 -> worldPosition.getY();
                     case 9 -> worldPosition.getZ();
+                    case 10 -> getMaxExplosionRange();
+                    case 11 -> getOverloadMax();
                     default -> 0;
                 };
             }
@@ -314,7 +348,6 @@ public class BatteryPackBlockEntity extends BlockEntity implements MenuProvider 
         tag.putBoolean("Overloaded", overloaded);
         tag.putInt("OverloadProgress", overloadProgress);
         tag.putBoolean("OverloadWarningSent", overloadWarningSent);
-        tag.putInt("Damage", damage);
     }
 
     @Override
@@ -328,6 +361,5 @@ public class BatteryPackBlockEntity extends BlockEntity implements MenuProvider 
         overloaded = tag.getBoolean("Overloaded");
         overloadProgress = Math.min(OVERLOAD_MAX - 1, Math.max(0, tag.getInt("OverloadProgress")));
         overloadWarningSent = tag.getBoolean("OverloadWarningSent");
-        damage = Math.max(0, tag.getInt("Damage"));
     }
 }

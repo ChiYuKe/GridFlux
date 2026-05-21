@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "grid_flux:block/cobalt_ore"
+    }
+  }
+}

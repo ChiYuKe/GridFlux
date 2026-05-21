@@ -18,11 +18,17 @@ public class ModCreativeTabs {
                     .icon(() -> new ItemStack(ModItems.BASIC_LITHIUM_BATTERY.get()))
                     .displayItems((parameters, output) -> {
                         output.accept(ModBlocks.LITHIUM_ORE);
+                        output.accept(ModBlocks.COBALT_ORE);
                         output.accept(ModItems.RAW_LITHIUM);
+                        output.accept(ModItems.RAW_COBALT);
                         output.accept(ModBlocks.RAW_LITHIUM_BLOCK);
+                        output.accept(ModBlocks.RAW_COBALT_BLOCK);
                         output.accept(ModItems.LITHIUM_INGOT);
+                        output.accept(ModItems.COBALT_INGOT);
                         output.accept(ModBlocks.LITHIUM_BLOCK);
+                        output.accept(ModBlocks.COBALT_BLOCK);
                         output.accept(ModItems.LITHIUM_DUST);
+                        output.accept(ModItems.COBALT_DUST);
                         output.accept(ModItems.GRAPHITE_DUST);
                         output.accept(ModItems.COPPER_COIL);
                         output.accept(ModItems.WRENCH);
