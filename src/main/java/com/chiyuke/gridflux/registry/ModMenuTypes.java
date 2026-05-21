@@ -1,5 +1,7 @@
-package com.chiyuke.gridflux;
+package com.chiyuke.gridflux.registry;
 
+import com.chiyuke.gridflux.GridFlux;
+import com.chiyuke.gridflux.menu.BatteryPackMenu;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.flag.FeatureFlags;

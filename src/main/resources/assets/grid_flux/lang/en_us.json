@@ -13,12 +13,13 @@
   "block.grid_flux.battery_pack": "Battery Pack",
   "container.grid_flux.battery_pack": "Battery Pack",
   "itemGroup.grid_flux": "Grid Flux",
-  "tooltip.grid_flux.energy": "Energy: %s / %s FE",
+  "tooltip.grid_flux.energy": "Energy: %s / %s",
   "tooltip.grid_flux.battery_pack.mode": "Mode: %s",
+  "tooltip.grid_flux.battery_pack.buffer": "Buffer/Output: %s/t",
   "tooltip.grid_flux.battery_pack.slot": "%s. %s: %s / %s FE",
   "tooltip.grid_flux.hold_shift": "Hold Shift to view internal batteries",
   "screen.grid_flux.battery_pack.mode": "Mode: %s",
   "mode.grid_flux.battery_pack.discharge": "Discharge",
   "mode.grid_flux.battery_pack.charge": "Charge",
-  "mode.grid_flux.battery_pack.standby": "Standby"
+  "mode.grid_flux.battery_pack.both": "Charge/Discharge"
 }

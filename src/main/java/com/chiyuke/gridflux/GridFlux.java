@@ -1,5 +1,12 @@
 package com.chiyuke.gridflux;
 
+import com.chiyuke.gridflux.registry.ModBlockEntities;
+import com.chiyuke.gridflux.registry.ModBlocks;
+import com.chiyuke.gridflux.registry.ModCapabilities;
+import com.chiyuke.gridflux.registry.ModCreativeTabs;
+import com.chiyuke.gridflux.registry.ModDataComponents;
+import com.chiyuke.gridflux.registry.ModItems;
+import com.chiyuke.gridflux.registry.ModMenuTypes;
 import com.mojang.logging.LogUtils;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.level.block.Blocks;

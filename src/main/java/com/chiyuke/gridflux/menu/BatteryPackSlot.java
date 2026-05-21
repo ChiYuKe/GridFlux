@@ -1,5 +1,6 @@
-package com.chiyuke.gridflux;
+package com.chiyuke.gridflux.menu;
 
+import com.chiyuke.gridflux.GridFlux;
 import net.minecraft.world.Container;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;

@@ -1,5 +1,8 @@
-package com.chiyuke.gridflux;
+package com.chiyuke.gridflux.registry;
 
+import com.chiyuke.gridflux.GridFlux;
+import com.chiyuke.gridflux.item.BatteryItem;
+import com.chiyuke.gridflux.item.BatteryPackBlockItem;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.neoforged.neoforge.registries.DeferredItem;

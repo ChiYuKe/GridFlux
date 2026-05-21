@@ -1,5 +1,12 @@
-package com.chiyuke.gridflux;
+package com.chiyuke.gridflux.block;
 
+import com.chiyuke.gridflux.energy.BatteryPackBlockEnergyStorage;
+import com.chiyuke.gridflux.energy.BatteryPackMode;
+import com.chiyuke.gridflux.GridFlux;
+import com.chiyuke.gridflux.menu.BatteryPackInventory;
+import com.chiyuke.gridflux.menu.BatteryPackMenu;
+import com.chiyuke.gridflux.registry.ModBlockEntities;
+import com.chiyuke.gridflux.registry.ModBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
@@ -20,6 +27,8 @@ import net.neoforged.neoforge.energy.IEnergyStorage;
 
 public class BatteryPackBlockEntity extends BlockEntity implements MenuProvider {
     private final BatteryPackInventory inventory = new BatteryPackInventory(this::setChanged);
+    private final BatteryPackBlockEnergyStorage energyStorage = new BatteryPackBlockEnergyStorage(this);
+    private int inputBuffer;
 
     public BatteryPackBlockEntity(BlockPos pos, BlockState blockState) {
         super(ModBlockEntities.BATTERY_PACK.get(), pos, blockState);
@@ -29,11 +38,42 @@ public class BatteryPackBlockEntity extends BlockEntity implements MenuProvider 
         return inventory;
     }
 
+    public BatteryPackBlockEnergyStorage getEnergyStorage() {
+        return energyStorage;
+    }
+
+    public int getInputBuffer() {
+        return inputBuffer;
+    }
+
+    public int getInputBufferCapacity() {
+        return inventory.getTransferRate();
+    }
+
+    public int receiveInputBuffer(int maxReceive, boolean simulate) {
+        int received = Math.min(maxReceive, Math.max(0, getInputBufferCapacity() - inputBuffer));
+        if (!simulate && received > 0) {
+            inputBuffer += received;
+            setChanged();
+        }
+        return received;
+    }
+
+    public int extractInputBuffer(int maxExtract, boolean simulate) {
+        int extracted = Math.min(maxExtract, inputBuffer);
+        if (!simulate && extracted > 0) {
+            inputBuffer -= extracted;
+            setChanged();
+        }
+        return extracted;
+    }
+
     public static void serverTick(Level level, BlockPos pos, BlockState state, BatteryPackBlockEntity blockEntity) {
         if (!blockEntity.inventory.getMode().activeOutput()) {
             return;
         }
-        if (blockEntity.inventory.getStoredEnergy() <= 0) {
+        BatteryPackBlockEnergyStorage source = blockEntity.getEnergyStorage();
+        if (source.getEnergyStored() <= 0) {
             return;
         }
 
@@ -42,7 +82,6 @@ public class BatteryPackBlockEntity extends BlockEntity implements MenuProvider 
             return;
         }
 
-        BatteryPackEnergyStorage source = new BatteryPackEnergyStorage(blockEntity.inventory, false, true);
         for (Direction direction : Direction.values()) {
             if (remainingOutput <= 0 || source.getEnergyStored() <= 0) {
                 break;
@@ -71,6 +110,7 @@ public class BatteryPackBlockEntity extends BlockEntity implements MenuProvider 
         BatteryPackInventory stackInventory = BatteryPackInventory.fromStack(stack);
         inventory.loadItems(stackInventory.copyItems());
         inventory.setMode(stackInventory.getMode());
+        inputBuffer = 0;
     }
 
     public ItemStack createItemStack() {
@@ -94,6 +134,7 @@ public class BatteryPackBlockEntity extends BlockEntity implements MenuProvider 
         super.saveAdditional(tag, registries);
         ContainerHelper.saveAllItems(tag, inventory.copyItems(), registries);
         tag.putInt("Mode", inventory.getMode().ordinal());
+        tag.putInt("InputBuffer", inputBuffer);
     }
 
     @Override
@@ -103,5 +144,6 @@ public class BatteryPackBlockEntity extends BlockEntity implements MenuProvider 
         ContainerHelper.loadAllItems(tag, items, registries);
         inventory.loadItems(items);
         inventory.setMode(BatteryPackMode.byId(tag.getInt("Mode")));
+        inputBuffer = Math.min(tag.getInt("InputBuffer"), getInputBufferCapacity());
     }
 }

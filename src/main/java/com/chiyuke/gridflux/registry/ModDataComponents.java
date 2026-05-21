@@ -1,5 +1,6 @@
-package com.chiyuke.gridflux;
+package com.chiyuke.gridflux.registry;
 
+import com.chiyuke.gridflux.GridFlux;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.Registries;

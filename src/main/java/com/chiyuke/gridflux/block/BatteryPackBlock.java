@@ -1,5 +1,7 @@
-package com.chiyuke.gridflux;
+package com.chiyuke.gridflux.block;
 
+import com.chiyuke.gridflux.GridFlux;
+import com.chiyuke.gridflux.registry.ModBlockEntities;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;

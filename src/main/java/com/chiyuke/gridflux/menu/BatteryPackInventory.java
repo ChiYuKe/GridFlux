@@ -1,5 +1,9 @@
-package com.chiyuke.gridflux;
+package com.chiyuke.gridflux.menu;
 
+import com.chiyuke.gridflux.energy.BatteryPackMode;
+import com.chiyuke.gridflux.GridFlux;
+import com.chiyuke.gridflux.item.BatteryItem;
+import com.chiyuke.gridflux.registry.ModDataComponents;
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.ItemStack;

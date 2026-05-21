@@ -1,5 +1,8 @@
-package com.chiyuke.gridflux;
+package com.chiyuke.gridflux.menu;
 
+import com.chiyuke.gridflux.energy.BatteryPackMode;
+import com.chiyuke.gridflux.GridFlux;
+import com.chiyuke.gridflux.registry.ModMenuTypes;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
@@ -49,17 +52,17 @@ public class BatteryPackMenu extends AbstractContainerMenu {
         container.startOpen(playerInventory.player);
 
         for (int slot = 0; slot < PACK_SLOT_COUNT; slot++) {
-            this.addSlot(new BatteryPackSlot(container, slot, 17 + slot * 18, 36));
+            this.addSlot(new BatteryPackSlot(container, slot, 17 + slot * 18, 40));
         }
 
         for (int row = 0; row < 3; row++) {
             for (int column = 0; column < 9; column++) {
-                this.addSlot(new Slot(playerInventory, column + row * 9 + 9, 8 + column * 18, 84 + row * 18));
+                this.addSlot(new Slot(playerInventory, column + row * 9 + 9, 8 + column * 18, 88 + row * 18));
             }
         }
 
         for (int column = 0; column < 9; column++) {
-            this.addSlot(new Slot(playerInventory, column, 8 + column * 18, 142));
+            this.addSlot(new Slot(playerInventory, column, 8 + column * 18, 146));
         }
     }
 
@@ -81,6 +84,10 @@ public class BatteryPackMenu extends AbstractContainerMenu {
             energy += BatteryPackInventory.getMaxEnergy(container.getItem(i));
         }
         return energy;
+    }
+
+    public int getBufferCapacity() {
+        return batteryInventory != null ? batteryInventory.getTransferRate() : 0;
     }
 
     public BatteryPackMode getMode() {

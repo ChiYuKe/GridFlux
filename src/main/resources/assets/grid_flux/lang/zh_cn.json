@@ -13,12 +13,13 @@
   "block.grid_flux.battery_pack": "电池包",
   "container.grid_flux.battery_pack": "电池包",
   "itemGroup.grid_flux": "矩阵通量",
-  "tooltip.grid_flux.energy": "能量：%s / %s FE",
+  "tooltip.grid_flux.energy": "能量：%s / %s",
   "tooltip.grid_flux.battery_pack.mode": "模式：%s",
+  "tooltip.grid_flux.battery_pack.buffer": "缓冲/输出速度：%s/t",
   "tooltip.grid_flux.battery_pack.slot": "%s. %s：%s / %s FE",
   "tooltip.grid_flux.hold_shift": "按住 Shift 查看内部电池",
   "screen.grid_flux.battery_pack.mode": "模式：%s",
   "mode.grid_flux.battery_pack.discharge": "放电",
   "mode.grid_flux.battery_pack.charge": "充电",
-  "mode.grid_flux.battery_pack.standby": "待机"
+  "mode.grid_flux.battery_pack.both": "边充边放"
 }

@@ -6,7 +6,7 @@
       "tag": "c:ingots/copper"
     },
     "G": {
-      "tag": "c:dusts/graphite"
+      "item": "grid_flux:graphite_dust"
     },
     "L": {
       "tag": "c:ingots/lithium"

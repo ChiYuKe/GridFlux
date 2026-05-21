@@ -1,6 +1,8 @@
-package com.chiyuke.gridflux;
+package com.chiyuke.gridflux.item;
 
-import java.text.NumberFormat;
+import com.chiyuke.gridflux.GridFlux;
+import com.chiyuke.gridflux.registry.ModDataComponents;
+import com.chiyuke.gridflux.util.EnergyText;
 import java.util.List;
 
 import net.minecraft.ChatFormatting;
@@ -10,8 +12,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 
 public class BatteryItem extends Item {
-    private static final NumberFormat ENERGY_FORMAT = NumberFormat.getIntegerInstance();
-
     private final int capacity;
     private final int transferRate;
 
@@ -52,8 +52,8 @@ public class BatteryItem extends Item {
     public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
         tooltipComponents.add(Component.translatable(
                 "tooltip.grid_flux.energy",
-                ENERGY_FORMAT.format(getEnergy(stack)),
-                ENERGY_FORMAT.format(capacity)
+                EnergyText.format(getEnergy(stack)),
+                EnergyText.format(capacity)
         ).withStyle(ChatFormatting.AQUA));
     }
 }

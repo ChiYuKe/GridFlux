@@ -1,5 +1,9 @@
-package com.chiyuke.gridflux;
+package com.chiyuke.gridflux.registry;
 
+import com.chiyuke.gridflux.energy.BatteryPackEnergyStorage;
+import com.chiyuke.gridflux.GridFlux;
+import com.chiyuke.gridflux.item.BatteryItem;
+import com.chiyuke.gridflux.menu.BatteryPackInventory;
 import net.minecraft.world.item.Item;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
@@ -18,7 +22,7 @@ public class ModCapabilities {
         event.registerBlockEntity(
                 Capabilities.EnergyStorage.BLOCK,
                 ModBlockEntities.BATTERY_PACK.get(),
-                (blockEntity, side) -> new BatteryPackEnergyStorage(blockEntity.getInventory())
+                (blockEntity, side) -> blockEntity.getEnergyStorage()
         );
     }
 

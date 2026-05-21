@@ -1,5 +1,7 @@
-package com.chiyuke.gridflux;
+package com.chiyuke.gridflux.registry;
 
+import com.chiyuke.gridflux.block.BatteryPackBlock;
+import com.chiyuke.gridflux.GridFlux;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;

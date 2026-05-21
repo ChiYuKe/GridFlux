@@ -1,11 +1,12 @@
-package com.chiyuke.gridflux;
+package com.chiyuke.gridflux.energy;
 
+import com.chiyuke.gridflux.GridFlux;
 import net.minecraft.network.chat.Component;
 
 public enum BatteryPackMode {
     DISCHARGE("discharge", true, false, true),
     CHARGE("charge", false, true, false),
-    STANDBY("standby", true, true, false);
+    BOTH("both", true, true, true);
 
     public static final BatteryPackMode DEFAULT = DISCHARGE;
 

@@ -1,5 +1,8 @@
-package com.chiyuke.gridflux;
+package com.chiyuke.gridflux.client;
 
+import com.chiyuke.gridflux.client.gui.BatteryPackScreen;
+import com.chiyuke.gridflux.GridFlux;
+import com.chiyuke.gridflux.registry.ModMenuTypes;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;

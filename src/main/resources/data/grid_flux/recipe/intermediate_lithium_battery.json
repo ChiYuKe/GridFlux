@@ -9,7 +9,7 @@
       "tag": "c:coils/copper"
     },
     "G": {
-      "tag": "c:dusts/graphite"
+      "item": "grid_flux:graphite_dust"
     }
   },
   "pattern": [

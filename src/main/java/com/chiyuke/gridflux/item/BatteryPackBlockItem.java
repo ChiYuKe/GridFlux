@@ -1,6 +1,10 @@
-package com.chiyuke.gridflux;
+package com.chiyuke.gridflux.item;
 
-import java.text.NumberFormat;
+import com.chiyuke.gridflux.GridFlux;
+import com.chiyuke.gridflux.menu.BatteryPackInventory;
+import com.chiyuke.gridflux.menu.BatteryPackMenu;
+import com.chiyuke.gridflux.registry.ModItems;
+import com.chiyuke.gridflux.util.EnergyText;
 import java.util.List;
 
 import net.minecraft.ChatFormatting;
@@ -18,8 +22,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 
 public class BatteryPackBlockItem extends BlockItem {
-    private static final NumberFormat ENERGY_FORMAT = NumberFormat.getIntegerInstance();
-
     public BatteryPackBlockItem(Block block, Properties properties) {
         super(block, properties.stacksTo(1));
     }
@@ -42,12 +44,16 @@ public class BatteryPackBlockItem extends BlockItem {
         BatteryPackInventory inventory = BatteryPackInventory.fromStack(stack);
         tooltipComponents.add(Component.translatable(
                 "tooltip.grid_flux.energy",
-                ENERGY_FORMAT.format(inventory.getStoredEnergy()),
-                ENERGY_FORMAT.format(inventory.getMaxEnergy())
+                EnergyText.format(inventory.getStoredEnergy()),
+                EnergyText.format(inventory.getMaxEnergy())
         ).withStyle(ChatFormatting.AQUA));
         tooltipComponents.add(Component.translatable(
                 "tooltip.grid_flux.battery_pack.mode",
                 inventory.getMode().displayName()
+        ).withStyle(ChatFormatting.GRAY));
+        tooltipComponents.add(Component.translatable(
+                "tooltip.grid_flux.battery_pack.buffer",
+                EnergyText.format(inventory.getTransferRate())
         ).withStyle(ChatFormatting.GRAY));
 
         if (!Screen.hasShiftDown()) {
@@ -62,10 +68,23 @@ public class BatteryPackBlockItem extends BlockItem {
                         "tooltip.grid_flux.battery_pack.slot",
                         i + 1,
                         battery.getHoverName(),
-                        ENERGY_FORMAT.format(batteryItem.getEnergy(battery)),
-                        ENERGY_FORMAT.format(batteryItem.getCapacity())
-                ).withStyle(ChatFormatting.GRAY));
+                        EnergyText.format(batteryItem.getEnergy(battery)),
+                        EnergyText.format(batteryItem.getCapacity())
+                ).withStyle(getBatteryColor(battery)));
             }
         }
+    }
+
+    private static ChatFormatting getBatteryColor(ItemStack battery) {
+        if (battery.getItem() == ModItems.BASIC_LITHIUM_BATTERY.get()) {
+            return ChatFormatting.YELLOW;
+        }
+        if (battery.getItem() == ModItems.INTERMEDIATE_LITHIUM_BATTERY.get()) {
+            return ChatFormatting.GREEN;
+        }
+        if (battery.getItem() == ModItems.ADVANCED_LITHIUM_BATTERY.get()) {
+            return ChatFormatting.LIGHT_PURPLE;
+        }
+        return ChatFormatting.GRAY;
     }
 }

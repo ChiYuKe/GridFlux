@@ -1,5 +1,7 @@
-package com.chiyuke.gridflux;
+package com.chiyuke.gridflux.energy;
 
+import com.chiyuke.gridflux.GridFlux;
+import com.chiyuke.gridflux.menu.BatteryPackInventory;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.energy.IEnergyStorage;

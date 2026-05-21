@@ -1,6 +1,24 @@
 {
-  "parent": "minecraft:block/cube_all",
-  "textures": {
-    "all": "grid_flux:block/battery_pack"
-  }
+	"format_version": "1.9.0",
+	"credit": "Made with Blockbench",
+	"parent": "block/cube_all",
+	"texture_size": [64, 64],
+	"textures": {
+		"1": "grid_flux:block/battery_pack",
+		"particle": "grid_flux:block/battery_pack"
+	},
+	"elements": [
+		{
+			"from": [0, 0, 0],
+			"to": [16, 16, 16],
+			"faces": {
+				"north": {"uv": [3.80223, 5.46093, 8.17225, 10.37959], "texture": "#1"},
+				"east": {"uv": [0.20415, 5.41627, 3.74482, 10.36045], "texture": "#1"},
+				"south": {"uv": [11.87241, 5.44817, 15.80861, 10.36683], "texture": "#1"},
+				"west": {"uv": [8.17225, 5.5311, 11.86603, 10.32217], "texture": "#1"},
+				"up": {"uv": [8.18501, 5.37799, 3.85327, 0.26794], "texture": "#1"},
+				"down": {"uv": [8.19777, 10.41148, 3.80223, 15.61085], "texture": "#1"}
+			}
+		}
+	]
 }
