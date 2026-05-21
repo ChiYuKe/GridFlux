@@ -13,14 +13,41 @@ import net.minecraft.world.entity.player.Inventory;
 
 public class BatteryPackScreen extends AbstractContainerScreen<BatteryPackMenu> {
     private static final int MODE_BUTTON_X = 155;
-    private static final int MODE_BUTTON_Y = 76;
+
+    private static final int BASIC_MODE_BUTTON_Y = 76;
+    private static final int INTERMEDIATE_MODE_BUTTON_Y = 94;
+    private static final int ADVANCED_MODE_BUTTON_Y = 130;
+
     private static final int MODE_BUTTON_SIZE = 10;
     private static final int MODE_LABEL_RIGHT = MODE_BUTTON_X - 4;
+    private final int modeButtonY;
 
     public BatteryPackScreen(BatteryPackMenu menu, Inventory playerInventory, Component title) {
         super(menu, playerInventory, title);
-        this.imageHeight = 166;
-        this.inventoryLabelY = 76;
+        this.imageHeight = imageHeight(menu.getPackSlotCount());
+        this.inventoryLabelY = inventoryLabelY(menu.getPackSlotCount());
+        this.modeButtonY = modeButtonY(menu.getPackSlotCount());
+    }
+
+    private static int imageHeight(int slotCount) {
+        if (slotCount > BatteryPackInventory.INTERMEDIATE_SIZE) {
+            return 220;
+        }
+        return slotCount > BatteryPackInventory.BASIC_SIZE ? 184 : 166;
+    }
+
+    private static int inventoryLabelY(int slotCount) {
+        if (slotCount > BatteryPackInventory.INTERMEDIATE_SIZE) {
+            return 130;
+        }
+        return slotCount > BatteryPackInventory.BASIC_SIZE ? 94 : 76;
+    }
+
+    private static int modeButtonY(int slotCount) {
+        if (slotCount > BatteryPackInventory.INTERMEDIATE_SIZE) {
+            return ADVANCED_MODE_BUTTON_Y;
+        }
+        return slotCount > BatteryPackInventory.BASIC_SIZE ? INTERMEDIATE_MODE_BUTTON_Y : BASIC_MODE_BUTTON_Y;
     }
 
     @Override
@@ -31,7 +58,7 @@ public class BatteryPackScreen extends AbstractContainerScreen<BatteryPackMenu> 
 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        if (button == 0 && isHovering(MODE_BUTTON_X, MODE_BUTTON_Y, MODE_BUTTON_SIZE, MODE_BUTTON_SIZE, mouseX, mouseY)) {
+        if (button == 0 && isHovering(MODE_BUTTON_X, modeButtonY, MODE_BUTTON_SIZE, MODE_BUTTON_SIZE, mouseX, mouseY)) {
             if (Minecraft.getInstance().gameMode != null) {
                 Minecraft.getInstance().gameMode.handleInventoryButtonClick(this.menu.containerId, 0);
             }
@@ -87,34 +114,41 @@ public class BatteryPackScreen extends AbstractContainerScreen<BatteryPackMenu> 
         guiGraphics.fill(x, y, x + this.imageWidth, y + 1, 0xFFFFFFFF);
         guiGraphics.fill(x, y + this.imageHeight - 1, x + this.imageWidth, y + this.imageHeight, 0xFF555555);
 
-        drawPanel(guiGraphics, x + MODE_BUTTON_X, y + MODE_BUTTON_Y, MODE_BUTTON_SIZE, MODE_BUTTON_SIZE);
-        drawModeIcon(guiGraphics, x + MODE_BUTTON_X, y + MODE_BUTTON_Y, this.menu.getMode());
+        drawButton(guiGraphics, x + MODE_BUTTON_X, y + modeButtonY);
+        drawModeIcon(guiGraphics, x + MODE_BUTTON_X, y + modeButtonY, this.menu.getMode());
 
-        for (int slot = 0; slot < BatteryPackInventory.SIZE; slot++) {
-            drawSlot(guiGraphics, x + 16 + slot * 18, y + 39);
+        int columns = Math.min(8, this.menu.getPackSlotCount());
+        for (int slot = 0; slot < this.menu.getPackSlotCount(); slot++) {
+            int column = slot % columns;
+            int row = slot / columns;
+            drawSlot(guiGraphics, x + 16 + column * 18, y + 39 + row * 18);
         }
         for (int row = 0; row < 3; row++) {
             for (int column = 0; column < 9; column++) {
-                drawSlot(guiGraphics, x + 7 + column * 18, y + 87 + row * 18);
+                drawSlot(guiGraphics, x + 7 + column * 18, y + this.inventoryLabelY + 11 + row * 18);
             }
         }
         for (int column = 0; column < 9; column++) {
-            drawSlot(guiGraphics, x + 7 + column * 18, y + 145);
+            drawSlot(guiGraphics, x + 7 + column * 18, y + this.inventoryLabelY + 69);
         }
     }
 
     private static void drawSlot(GuiGraphics guiGraphics, int x, int y) {
-        guiGraphics.fill(x, y, x + 18, y + 18, 0xFF555555);
-        guiGraphics.fill(x + 1, y + 1, x + 17, y + 17, 0xFF8B8B8B);
-        guiGraphics.fill(x + 2, y + 2, x + 16, y + 16, 0xFFCFCFCF);
+        guiGraphics.fill(x, y, x + 18, y + 18, 0xFFE0E0E0);
+        guiGraphics.fill(x + 1, y + 1, x + 17, y + 17, 0xFFA8A8A8);
+        guiGraphics.fill(x + 1, y + 1, x + 17, y + 2, 0xFF777777);
+        guiGraphics.fill(x + 1, y + 1, x + 2, y + 17, 0xFF777777);
+        guiGraphics.fill(x + 2, y + 2, x + 16, y + 16, 0xFFD6D6D6);
+        guiGraphics.fill(x + 1, y + 16, x + 17, y + 17, 0xFFF0F0F0);
+        guiGraphics.fill(x + 16, y + 1, x + 17, y + 17, 0xFFF0F0F0);
+        guiGraphics.fill(x + 2, y + 15, x + 16, y + 16, 0xFFE3E3E3);
+        guiGraphics.fill(x + 15, y + 2, x + 16, y + 16, 0xFFE3E3E3);
     }
 
-    private static void drawPanel(GuiGraphics guiGraphics, int x, int y, int width, int height) {
-        guiGraphics.fill(x, y, x + width, y + height, 0xFF555555);
-        guiGraphics.fill(x + 1, y + 1, x + width - 1, y + height - 1, 0xFF8B8B8B);
-        guiGraphics.fill(x + 2, y + 2, x + width - 2, y + height - 2, 0xFFD6D6D6);
-        guiGraphics.fill(x + 2, y + 2, x + width - 2, y + 3, 0xFFFFFFFF);
-        guiGraphics.fill(x + 2, y + height - 3, x + width - 2, y + height - 2, 0xFF777777);
+    private static void drawButton(GuiGraphics guiGraphics, int x, int y) {
+        guiGraphics.fill(x, y, x + MODE_BUTTON_SIZE, y + MODE_BUTTON_SIZE, 0xFF555555);
+        guiGraphics.fill(x + 1, y + 1, x + MODE_BUTTON_SIZE - 1, y + MODE_BUTTON_SIZE - 1, 0xFFD6D6D6);
+        guiGraphics.fill(x + 3, y + 3, x + MODE_BUTTON_SIZE - 3, y + MODE_BUTTON_SIZE - 3, 0xFF3F9FA7);
     }
 
     private static void drawModeIcon(GuiGraphics guiGraphics, int x, int y, BatteryPackMode mode) {

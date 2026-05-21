@@ -1,6 +1,7 @@
 package com.chiyuke.gridflux.client;
 
 import com.chiyuke.gridflux.client.gui.BatteryPackScreen;
+import com.chiyuke.gridflux.client.gui.BatteryPackConfigScreen;
 import com.chiyuke.gridflux.GridFlux;
 import com.chiyuke.gridflux.registry.ModMenuTypes;
 import net.neoforged.api.distmarker.Dist;
@@ -31,5 +32,8 @@ public class GridFluxClient {
     @SubscribeEvent
     static void registerMenuScreens(RegisterMenuScreensEvent event) {
         event.register(ModMenuTypes.BATTERY_PACK.get(), BatteryPackScreen::new);
+        event.register(ModMenuTypes.INTERMEDIATE_BATTERY_PACK.get(), BatteryPackScreen::new);
+        event.register(ModMenuTypes.ADVANCED_BATTERY_PACK.get(), BatteryPackScreen::new);
+        event.register(ModMenuTypes.BATTERY_PACK_CONFIG.get(), BatteryPackConfigScreen::new);
     }
 }

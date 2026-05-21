@@ -14,6 +14,8 @@ public class ModBlockEntities {
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<BatteryPackBlockEntity>> BATTERY_PACK =
             BLOCK_ENTITIES.register("battery_pack", () -> BlockEntityType.Builder.of(
                     BatteryPackBlockEntity::new,
-                    ModBlocks.BATTERY_PACK.get()
+                    ModBlocks.BATTERY_PACK.get(),
+                    ModBlocks.INTERMEDIATE_BATTERY_PACK.get(),
+                    ModBlocks.ADVANCED_BATTERY_PACK.get()
             ).build(null));
 }

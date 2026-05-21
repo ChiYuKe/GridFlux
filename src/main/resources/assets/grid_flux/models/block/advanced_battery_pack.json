@@ -1,0 +1,6 @@
+{
+  "parent": "block/cube_all",
+  "textures": {
+    "all": "grid_flux:block/advanced_battery_pack"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "tools",
+  "key": {
+    "C": {
+      "tag": "c:ingots/copper"
+    },
+    "I": {
+      "tag": "c:ingots/lithium"
+    }
+  },
+  "pattern": [
+    "C C",
+    " I ",
+    " I "
+  ],
+  "result": {
+    "count": 1,
+    "id": "grid_flux:wrench"
+  }
+}

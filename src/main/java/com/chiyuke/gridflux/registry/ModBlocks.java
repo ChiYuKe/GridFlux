@@ -40,4 +40,20 @@ public class ModBlocks {
                     .strength(2.5F, 6.0F)
                     .sound(SoundType.METAL)
     );
+
+    public static final DeferredBlock<BatteryPackBlock> INTERMEDIATE_BATTERY_PACK = BLOCKS.registerBlock(
+            "intermediate_battery_pack",
+            properties -> new BatteryPackBlock(com.chiyuke.gridflux.menu.BatteryPackInventory.INTERMEDIATE_SIZE, properties),
+            BlockBehaviour.Properties.of()
+                    .strength(3.0F, 6.0F)
+                    .sound(SoundType.METAL)
+    );
+
+    public static final DeferredBlock<BatteryPackBlock> ADVANCED_BATTERY_PACK = BLOCKS.registerBlock(
+            "advanced_battery_pack",
+            properties -> new BatteryPackBlock(com.chiyuke.gridflux.menu.BatteryPackInventory.ADVANCED_SIZE, properties),
+            BlockBehaviour.Properties.of()
+                    .strength(3.5F, 6.0F)
+                    .sound(SoundType.METAL)
+    );
 }

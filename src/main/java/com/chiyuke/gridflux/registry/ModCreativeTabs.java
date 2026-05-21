@@ -25,10 +25,13 @@ public class ModCreativeTabs {
                         output.accept(ModItems.LITHIUM_DUST);
                         output.accept(ModItems.GRAPHITE_DUST);
                         output.accept(ModItems.COPPER_COIL);
+                        output.accept(ModItems.WRENCH);
                         output.accept(ModItems.BASIC_LITHIUM_BATTERY);
                         output.accept(ModItems.INTERMEDIATE_LITHIUM_BATTERY);
                         output.accept(ModItems.ADVANCED_LITHIUM_BATTERY);
                         output.accept(ModItems.BATTERY_PACK);
+                        output.accept(ModItems.INTERMEDIATE_BATTERY_PACK);
+                        output.accept(ModItems.ADVANCED_BATTERY_PACK);
                     })
                     .build()
     );

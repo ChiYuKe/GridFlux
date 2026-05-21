@@ -21,4 +21,9 @@ public class ModDataComponents {
             "battery_pack_mode",
             builder -> builder.persistent(Codec.INT).networkSynchronized(ByteBufCodecs.VAR_INT)
     );
+
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> BATTERY_PACK_DAMAGE = DATA_COMPONENTS.registerComponentType(
+            "battery_pack_damage",
+            builder -> builder.persistent(Codec.INT).networkSynchronized(ByteBufCodecs.VAR_INT)
+    );
 }

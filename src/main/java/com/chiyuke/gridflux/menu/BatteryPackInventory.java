@@ -10,22 +10,31 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ItemContainerContents;
 
 public class BatteryPackInventory extends SimpleContainer {
-    public static final int SIZE = 8;
+    public static final int BASIC_SIZE = 8;
+    public static final int INTERMEDIATE_SIZE = 16;
+    public static final int ADVANCED_SIZE = 32;
 
+    private final int size;
     private Runnable changedCallback;
     private BatteryPackMode mode = BatteryPackMode.DEFAULT;
 
     public BatteryPackInventory(Runnable changedCallback) {
-        super(SIZE);
+        this(BASIC_SIZE, changedCallback);
+    }
+
+    public BatteryPackInventory(int size, Runnable changedCallback) {
+        super(size);
+        this.size = size;
         this.changedCallback = changedCallback;
     }
 
     public static BatteryPackInventory fromStack(ItemStack stack) {
-        BatteryPackInventory inventory = new BatteryPackInventory(null);
-        NonNullList<ItemStack> items = NonNullList.withSize(SIZE, ItemStack.EMPTY);
+        int size = com.chiyuke.gridflux.item.BatteryPackBlockItem.getSlotCount(stack);
+        BatteryPackInventory inventory = new BatteryPackInventory(size, null);
+        NonNullList<ItemStack> items = NonNullList.withSize(size, ItemStack.EMPTY);
         stack.getOrDefault(net.minecraft.core.component.DataComponents.CONTAINER, ItemContainerContents.EMPTY).copyInto(items);
         inventory.mode = BatteryPackMode.byId(stack.getOrDefault(ModDataComponents.BATTERY_PACK_MODE.get(), BatteryPackMode.DEFAULT.ordinal()));
-        for (int i = 0; i < SIZE; i++) {
+        for (int i = 0; i < size; i++) {
             ItemStack itemStack = items.get(i);
             if (isBattery(itemStack)) {
                 itemStack.setCount(1);
@@ -85,15 +94,15 @@ public class BatteryPackInventory extends SimpleContainer {
     }
 
     public NonNullList<ItemStack> copyItems() {
-        NonNullList<ItemStack> items = NonNullList.withSize(SIZE, ItemStack.EMPTY);
-        for (int i = 0; i < SIZE; i++) {
+        NonNullList<ItemStack> items = NonNullList.withSize(size, ItemStack.EMPTY);
+        for (int i = 0; i < size; i++) {
             items.set(i, getItem(i).copy());
         }
         return items;
     }
 
     public void loadItems(NonNullList<ItemStack> items) {
-        for (int i = 0; i < SIZE; i++) {
+        for (int i = 0; i < size; i++) {
             ItemStack stack = i < items.size() ? items.get(i) : ItemStack.EMPTY;
             setItem(i, isBattery(stack) ? stack.copyWithCount(1) : ItemStack.EMPTY);
         }
@@ -122,6 +131,17 @@ public class BatteryPackInventory extends SimpleContainer {
 
     public void saveToStack(ItemStack stack) {
         stack.set(net.minecraft.core.component.DataComponents.CONTAINER, ItemContainerContents.fromItems(copyItems()));
+        stack.set(ModDataComponents.BATTERY_PACK_MODE.get(), mode.ordinal());
+    }
+
+    public void saveDamagedToStack(ItemStack stack) {
+        NonNullList<ItemStack> damagedItems = copyItems();
+        for (ItemStack item : damagedItems) {
+            if (item.getItem() instanceof BatteryItem) {
+                item.set(ModDataComponents.ENERGY.get(), 0);
+            }
+        }
+        stack.set(net.minecraft.core.component.DataComponents.CONTAINER, ItemContainerContents.fromItems(damagedItems));
         stack.set(ModDataComponents.BATTERY_PACK_MODE.get(), mode.ordinal());
     }
 }

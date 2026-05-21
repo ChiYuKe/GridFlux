@@ -9,25 +9,40 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 
 public class BatteryPackMenu extends AbstractContainerMenu {
-    private static final int PACK_SLOT_COUNT = BatteryPackInventory.SIZE;
-    private static final int PLAYER_SLOT_START = PACK_SLOT_COUNT;
-    private static final int PLAYER_SLOT_END = PLAYER_SLOT_START + 36;
-
+    private final int packSlotCount;
+    private final int playerSlotStart;
+    private final int playerSlotEnd;
     private final Container container;
     private final BatteryPackInventory batteryInventory;
     private final ContainerData data;
 
     public BatteryPackMenu(int containerId, Inventory playerInventory) {
-        this(containerId, playerInventory, new BatteryPackInventory(null));
+        this(containerId, playerInventory, BatteryPackInventory.BASIC_SIZE);
+    }
+
+    public BatteryPackMenu(int containerId, Inventory playerInventory, int slotCount) {
+        this(containerId, playerInventory, new BatteryPackInventory(slotCount, null), slotCount);
     }
 
     public BatteryPackMenu(int containerId, Inventory playerInventory, Container container) {
-        super(ModMenuTypes.BATTERY_PACK.get(), containerId);
-        checkContainerSize(container, PACK_SLOT_COUNT);
+        this(containerId, playerInventory, container, container.getContainerSize());
+    }
+
+    public BatteryPackMenu(int containerId, Inventory playerInventory, Container container, int slotCount) {
+        this(containerId, playerInventory, container, slotCount, menuTypeFor(slotCount));
+    }
+
+    private BatteryPackMenu(int containerId, Inventory playerInventory, Container container, int slotCount, MenuType<?> menuType) {
+        super(menuType, containerId);
+        checkContainerSize(container, slotCount);
+        this.packSlotCount = slotCount;
+        this.playerSlotStart = packSlotCount;
+        this.playerSlotEnd = playerSlotStart + 36;
         this.container = container;
         this.batteryInventory = container instanceof BatteryPackInventory inventory ? inventory : null;
         this.data = new ContainerData() {
@@ -51,19 +66,40 @@ public class BatteryPackMenu extends AbstractContainerMenu {
         this.addDataSlots(data);
         container.startOpen(playerInventory.player);
 
-        for (int slot = 0; slot < PACK_SLOT_COUNT; slot++) {
-            this.addSlot(new BatteryPackSlot(container, slot, 17 + slot * 18, 40));
+        int columns = Math.min(8, packSlotCount);
+        int startX = packSlotCount > 8 ? 17 : 17;
+        for (int slot = 0; slot < packSlotCount; slot++) {
+            int column = slot % columns;
+            int row = slot / columns;
+            this.addSlot(new BatteryPackSlot(container, slot, startX + column * 18, 40 + row * 18));
         }
 
         for (int row = 0; row < 3; row++) {
             for (int column = 0; column < 9; column++) {
-                this.addSlot(new Slot(playerInventory, column + row * 9 + 9, 8 + column * 18, 88 + row * 18));
+                this.addSlot(new Slot(playerInventory, column + row * 9 + 9, 8 + column * 18, playerInventoryY(slotCount) + row * 18));
             }
         }
 
         for (int column = 0; column < 9; column++) {
-            this.addSlot(new Slot(playerInventory, column, 8 + column * 18, 146));
+            this.addSlot(new Slot(playerInventory, column, 8 + column * 18, playerInventoryY(slotCount) + 58));
         }
+    }
+
+    private static int playerInventoryY(int slotCount) {
+        if (slotCount > BatteryPackInventory.INTERMEDIATE_SIZE) {
+            return 142;
+        }
+        return slotCount > BatteryPackInventory.BASIC_SIZE ? 106 : 88;
+    }
+
+    private static MenuType<?> menuTypeFor(int slotCount) {
+        if (slotCount == BatteryPackInventory.ADVANCED_SIZE) {
+            return ModMenuTypes.ADVANCED_BATTERY_PACK.get();
+        }
+        if (slotCount == BatteryPackInventory.INTERMEDIATE_SIZE) {
+            return ModMenuTypes.INTERMEDIATE_BATTERY_PACK.get();
+        }
+        return ModMenuTypes.BATTERY_PACK.get();
     }
 
     public Container getContainer() {
@@ -72,7 +108,7 @@ public class BatteryPackMenu extends AbstractContainerMenu {
 
     public int getStoredEnergy() {
         int energy = 0;
-        for (int i = 0; i < PACK_SLOT_COUNT; i++) {
+        for (int i = 0; i < packSlotCount; i++) {
             energy += BatteryPackInventory.getStoredEnergy(container.getItem(i));
         }
         return energy;
@@ -80,10 +116,14 @@ public class BatteryPackMenu extends AbstractContainerMenu {
 
     public int getMaxEnergy() {
         int energy = 0;
-        for (int i = 0; i < PACK_SLOT_COUNT; i++) {
+        for (int i = 0; i < packSlotCount; i++) {
             energy += BatteryPackInventory.getMaxEnergy(container.getItem(i));
         }
         return energy;
+    }
+
+    public int getPackSlotCount() {
+        return packSlotCount;
     }
 
     public int getBufferCapacity() {
@@ -116,12 +156,12 @@ public class BatteryPackMenu extends AbstractContainerMenu {
             ItemStack stack = slot.getItem();
             original = stack.copy();
 
-            if (index < PACK_SLOT_COUNT) {
-                if (!this.moveItemStackTo(stack, PLAYER_SLOT_START, PLAYER_SLOT_END, true)) {
+            if (index < packSlotCount) {
+                if (!this.moveItemStackTo(stack, playerSlotStart, playerSlotEnd, true)) {
                     return ItemStack.EMPTY;
                 }
             } else if (BatteryPackInventory.isBattery(stack)) {
-                if (!this.moveItemStackTo(stack, 0, PACK_SLOT_COUNT, false)) {
+                if (!this.moveItemStackTo(stack, 0, packSlotCount, false)) {
                     return ItemStack.EMPTY;
                 }
             } else {

@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "tag": "c:batteries/lithium/advanced"
+    },
+    "C": {
+      "tag": "c:coils/copper"
+    },
+    "L": {
+      "tag": "c:storage_blocks/lithium"
+    },
+    "P": {
+      "item": "grid_flux:intermediate_battery_pack"
+    }
+  },
+  "pattern": [
+    "ACA",
+    "LPL",
+    "ACA"
+  ],
+  "result": {
+    "count": 1,
+    "id": "grid_flux:advanced_battery_pack"
+  }
+}

@@ -17,7 +17,9 @@ public class ModCapabilities {
         event.registerItem(
                 Capabilities.EnergyStorage.ITEM,
                 (stack, context) -> new BatteryPackEnergyStorage(BatteryPackInventory.fromStack(stack)),
-                ModBlocks.BATTERY_PACK.get()
+                ModBlocks.BATTERY_PACK.get(),
+                ModBlocks.INTERMEDIATE_BATTERY_PACK.get(),
+                ModBlocks.ADVANCED_BATTERY_PACK.get()
         );
         event.registerBlockEntity(
                 Capabilities.EnergyStorage.BLOCK,

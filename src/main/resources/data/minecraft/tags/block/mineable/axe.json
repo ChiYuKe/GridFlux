@@ -1,5 +1,7 @@
 {
   "values": [
-    "grid_flux:battery_pack"
+    "grid_flux:battery_pack",
+    "grid_flux:intermediate_battery_pack",
+    "grid_flux:advanced_battery_pack"
   ]
 }
